@@ -2,6 +2,8 @@
 ### Required Environment Variables
 `TOKEN` - Discord Bot Token
 
+`SIMULATE` - True or False. True simulates kicks, but doesn't do it. False will make the bot function as designed. Defaults to True
+
 ### To Run the Bot
 
 #### REGARDING ENVIRONMENT VARIABLES.

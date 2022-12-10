@@ -5,7 +5,9 @@ from typing import Optional, Dict, List, Callable
 import discord
 from discord import app_commands
 from discord.ext import commands
+import os
 
+SIMULATE = os.environ.get('SIMULATE', 'True').lower() == 'true'
 log = logging.getLogger(__name__)
 
 
@@ -48,8 +50,9 @@ class PurgeSession:
     async def _kick_members(self):
         for m in self.members:
             g = m.guild
-            log.info(f"Kicked Guild: {g.name} (id: {g.id}) / Member: {m.display_name} (id: {m.id})")
-            await m.kick(reason=self.reason)
+            log.info(f"{'Simulated' if SIMULATE else ''} Kicked Guild: {g.name} (id: {g.id}) / Member: {m.display_name} (id: {m.id})")
+            if not SIMULATE:
+                await m.kick(reason=self.reason)
             self.kicked_members.append(m)
 
 
@@ -62,6 +65,7 @@ class Purge(commands.Cog):
     @app_commands.check(is_owner)
     @app_commands.checks.bot_has_permissions(kick_members=True)
     async def start_cmd(self, itx: discord.Interaction, *, reason: str):
+        mode = "Simulated" if SIMULATE else ''
         await itx.response.defer(ephemeral=True)
         key = itx.guild_id
         existing_session = self.sessions.get(key)
@@ -73,11 +77,12 @@ class Purge(commands.Cog):
         session = PurgeSession(interaction=itx, members=members, reason=reason, callback=self.on_purge_completion)
         self.sessions[key] = session
         session.start()
-        await itx.followup.send(f"Kicking {len(members)} members from the Guild. Type /stop to stop.", ephemeral=True)
+        await itx.followup.send(f"{mode} Kicking {len(members)} members from the Guild. Type /stop to stop.", ephemeral=True)
 
     @app_commands.command(name='stop')
     @app_commands.check(is_owner)
     async def stop_cmd(self, itx: discord.Interaction):
+        mode = "Simulated" if SIMULATE else ''
         await itx.response.defer()
         key = itx.guild_id
         existing_session = self.sessions.get(key)
@@ -86,7 +91,7 @@ class Purge(commands.Cog):
             return
         log.info(f"Stopping Kick in {itx.guild.name}")
         existing_session.stop()
-        await itx.followup.send("Cancelling Kick Session", ephemeral=True)
+        await itx.followup.send(f"Cancelling {mode} Kick Session", ephemeral=True)
 
     @start_cmd.error
     @stop_cmd.error
@@ -103,7 +108,8 @@ class Purge(commands.Cog):
         condition = "was Cancelled" if cancelled else "Completed Successfully"
         kicked_member_names = ', '.join([m.display_name for m in session.kicked_members])
         description = f"""{len(session.kicked_members)} were removed\n\n {kicked_member_names}"""
-        embed = discord.Embed(title=f"Kick Session {condition}", description=description)
+        mode = "Simulated" if SIMULATE else ''
+        embed = discord.Embed(title=f"{mode} Kick Session {condition}", description=description)
         try:
             await session.interaction.followup.send(embed=embed, ephemeral=True)
         except (discord.HTTPException, discord.NotFound):

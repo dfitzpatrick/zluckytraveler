@@ -21,7 +21,8 @@ class CoreCog(commands.Cog):
             """For further help, use /cmd and see the hints that discord provides
 
             **Available Commands**
-          
+            /start (reason) - Kick users with no roles. Note, this may take awhile. GUILD OWNERS ONLY.
+            /stop - Stops the kick process before it finishes. GUILD OWNERS ONLY.
         """)
         embed = discord.Embed(title=title, description=description)
 

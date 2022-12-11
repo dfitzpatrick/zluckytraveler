@@ -99,7 +99,7 @@ class PurgeSession:
     def start(self):
         guild_name = self.interaction.guild.name
         guild_id = self.interaction.guild_id
-        self.log.info(f"Starting {self.mode.lower()} kick session in {guild_name} (id: {guild_id}")
+        self.log.info(f"Starting {self.mode.lower()} kick session in {guild_name} (id: {guild_id})")
         self.task = asyncio.create_task(self._kick_members())
         self.task.add_done_callback(self.task_callback)
 

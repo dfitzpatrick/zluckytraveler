@@ -21,8 +21,11 @@ class CoreCog(commands.Cog):
             """For further help, use /cmd and see the hints that discord provides
 
             **Available Commands**
-            /start (reason) - Kick users with no roles. Note, this may take awhile. GUILD OWNERS ONLY.
-            /stop - Stops the kick process before it finishes. GUILD OWNERS ONLY.
+            `/start-kicking (timeframe)` - Kick users with no roles. timeframe in a format like `1w2d3h4m5s`. Defaults to '24h'
+            The timeframe excludes members from the kick. '24h' will kick all non-role members except those that have
+            joined within the 24 hours
+            
+            `/stop-kicking` - Stops the kick process before it finishes.
         """)
         embed = discord.Embed(title=title, description=description)
 

@@ -35,6 +35,13 @@ To keep your bot from needing the message_content priviliged intents, the bot on
 
 This needs to only be ran once.
 
+### Binding Volumes
+`/home/app/.env` - environment variables to use without needing to pass through the command line
+
+`/home/app/bot/logs` - Logs that are written for each kick session.
+
+NOTE: UNLESS YOU BIND A VOLUME TO LOGS, THEY WILL BE LOST
+
 ### Other Considerations
 Typically GUILD OWNER type commands are not recommended as they take up spots  in the command tree and all users can see them. We
 could easily transition these to text commands as mentioned above or we can keep it as it is.

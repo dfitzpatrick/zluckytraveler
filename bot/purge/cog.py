@@ -193,7 +193,7 @@ class Purge(commands.Cog):
         self.confirm_views[itx.guild_id] = view
 
         await itx.followup.send(embeds=[config_embed, embed], view=view, ephemeral=True)
-        view.message = await itx.original_message()
+        view.message = await itx.original_response()
 
     @app_commands.command(name='stop-kicking')
     @app_commands.check(is_owner)

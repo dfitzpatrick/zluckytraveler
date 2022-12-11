@@ -8,6 +8,9 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY . .
+WORKDIR /home/app/bot
+RUN mkdir "logs"
+WORKDIR /home/app
 CMD ["python3", "-m", "bot"]
 
 

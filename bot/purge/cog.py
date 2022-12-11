@@ -195,7 +195,7 @@ class Purge(commands.Cog):
         await itx.followup.send(embeds=[config_embed, embed], view=view, ephemeral=True)
         view.message = await itx.original_response()
 
-    @app_commands.command(name='stop-kicking')
+    @app_commands.command(name='stop-kicking', description="Stops the kicking session that is in-progress")
     @app_commands.check(is_owner)
     async def stop_cmd(self, itx: discord.Interaction):
         await itx.response.defer()

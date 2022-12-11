@@ -172,7 +172,7 @@ class Purge(commands.Cog):
                 member.id != self.bot.user.id,
             ])
         audit_log_reason = '/start-kicking command was used'
-        await itx.response.defer(ephemeral=True)
+        await itx.response.defer(ephemeral=True, thinking=True)
         key = itx.guild_id
         existing_session = self.sessions.get(key)
         if existing_session:
